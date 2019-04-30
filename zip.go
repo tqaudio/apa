@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 func createZip(archivePath string, sourcePaths, destinationPaths []string) error {
@@ -47,7 +49,7 @@ func appendFile(zipWriter *zip.Writer, sourcePath, destinationPath string) error
 		return err
 	}
 
-	header.Name = destinationPath
+	header.Name = strings.Join(strings.Split(destinationPath, string(filepath.Separator)), "/")
 	header.Method = zip.Deflate
 
 	writer, err := zipWriter.CreateHeader(header)
